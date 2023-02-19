@@ -4,7 +4,7 @@ variable "ssh_pub_key" {
 }
 
 variable "instance_tag" {
-  type = map(any)
+  type = list(any)
 }
 
 variable "ami" {

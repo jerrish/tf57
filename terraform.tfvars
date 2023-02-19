@@ -1,9 +1,10 @@
 ssh_pub_key = "terraformclass-global.pub"
-instance_tag = {
-  Name    = "tf-webserver1"
-  Dept    = "devops"
-  Project = "Projecta"
-}
+instance_tag = [{
+  Name = "tf-webserver1"
+  },
+  {
+    Name = "tf-webserver2"
+}]
 ami = {
   amazon = "ami-0cca134ec43cf708f"
   rhel   = "ami-0f9d9a251c1a44858"

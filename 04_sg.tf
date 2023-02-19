@@ -3,7 +3,7 @@ data "publicip_address" "default" {
 
 resource "aws_security_group" "demo_sg" {
   name        = "tf-vpc-sg"
-  description = "Allow ${data.publicip_address.default.ip} for the application"
+  description = "Allow required traffic for the application"
   vpc_id      = aws_vpc.demo_vpc.id
   ingress {
     description = "ssh port"

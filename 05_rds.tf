@@ -16,6 +16,6 @@ resource "aws_db_instance" "demo_database" {
   db_subnet_group_name   = aws_db_subnet_group.demo_db_subnet_group.id
   vpc_security_group_ids = [aws_security_group.demo_sg.id]
   skip_final_snapshot    = true
-  availability_zone      = "ap-south-1a"
+  availability_zone      = data.aws_availability_zones.available.names[0]
   db_name                = var.initial_db_name
 }

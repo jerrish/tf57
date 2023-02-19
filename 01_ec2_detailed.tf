@@ -13,17 +13,32 @@ data "aws_ami" "updated_ami" {
   }
 }
 
+locals {
+  subnets = [aws_subnet.demo_subnet1.id, aws_subnet.demo_subnet2.id]
+}
 #this resource creates ec2 instance in aws specified region
 resource "aws_instance" "demo_instance" {
-  tags                   = var.instance_tag
+  tags                   = var.instance_tag[count.index]
   ami                    = data.aws_ami.updated_ami.id #lookup(var.ami, var.os_specific, "ami-123")
   instance_type          = element(var.instance_type, var.size)
   key_name               = aws_key_pair.demo_ssh_pub_key.key_name
-  subnet_id              = aws_subnet.demo_subnet1.id
+  subnet_id              = local.subnets[count.index]
   vpc_security_group_ids = [aws_security_group.demo_sg.id]
+  count                  = 2
+
+  provisioner "file" {
+    source      = "./nothing"
+    destination = "/nowhere"
+    on_failure  = continue
+  }
 
   provisioner "local-exec" {
     command = "echo ${self.public_ip} > public_ip.txt"
+  }
+
+  provisioner "local-exec" {
+    when    = destroy
+    command = "del public_ip.txt"
   }
 
   connection {
